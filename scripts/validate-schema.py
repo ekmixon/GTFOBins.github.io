@@ -19,12 +19,12 @@ def build_schema():
                     'type': 'object',
                     'properties': {
                         'description': {'type': 'string'},
-                        'code': {'type': 'string'}
+                        'code': {'type': 'string'},
                     },
                     'required': ['code'],
-                    'additionalProperties': False
+                    'additionalProperties': False,
                 },
-                'minimum': 1
+                'minimum': 1,
             }
         },
         'type': 'object',
@@ -33,13 +33,15 @@ def build_schema():
             'functions': {
                 'type': 'object',
                 "patternProperties": {
-                    '^({})$'.format('|'.join(function_names)): {'$ref': '#/definitions/examples'}
+                    f"^({'|'.join(function_names)})$": {
+                        '$ref': '#/definitions/examples'
+                    }
                 },
-                'additionalProperties': False
-            }
+                'additionalProperties': False,
+            },
         },
         'required': ['functions'],
-        'additionalProperties': False
+        'additionalProperties': False,
     }
 
 def validate_directory(root):
@@ -53,7 +55,7 @@ def validate_directory(root):
         try:
             jsonschema.validate(next(data), schema)
         except jsonschema.exceptions.ValidationError as err:
-            print('{}: {}'.format(name, err))
+            print(f'{name}: {err}')
             sys.exit(1)
 
 if __name__ == '__main__':
